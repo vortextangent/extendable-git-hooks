@@ -1,0 +1,4 @@
+#!/bin/bash
+
+#run personal hooks
+. "$(dirname "$0")/base"
