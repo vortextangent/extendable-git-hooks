@@ -1,25 +1,28 @@
 #!/bin/bash
 exec 1>&2
-echo "base script"
 CYAN="\[\033[0;36m\]"
 RESET="\[\033[0m\]"
 RED="\033[0;31m"
-YELLOW="\033[1;33m"
-GREEN="\033[1;32m"
+YELLOW="\033[0;33m"
+GREEN="\033[0;32m"
 
-# Check if the individual developer has his own hook
-CMD_NAME=`basename $0`
-if [ -f $( dirname "${BASH_SOURCE[0]}" )/personal/$CMD_NAME ]
-then
-  # If so, run it. $@ passes all the command line arguments passed to this function
-  # If the personal hook fails, fail this one as well
-  echo "Running User hook '$CMD_NAME'"
+repositoryFilter=$(git remote get-url origin | grep -oe "riskalyze[^\.]*" )
 
-  if ! $( dirname "${BASH_SOURCE[0]}" )/personal/$CMD_NAME $@
+if [ -n "${repositoryFilter}" ]; then
+  echo "Working with ${repositoryFilter}"
+  # Check if the individual developer has his own hook
+  CMD_NAME=`basename $0`
+  if [ -f $( dirname "${BASH_SOURCE[0]}" )/personal/$CMD_NAME ]
   then
-    echo "User hook '$CMD_NAME' failed"  >&2
-    exit 1
+    # If so, run it. $@ passes all the command line arguments passed to this function
+    # If the personal hook fails, fail this one as well
+    echo "Running User hook '$CMD_NAME'"
+
+    if ! $( dirname "${BASH_SOURCE[0]}" )/personal/$CMD_NAME $@
+    then
+      echo "User hook '$CMD_NAME' failed"  >&2
+      exit 1
+    fi
   fi
 fi
- 
 exit 0

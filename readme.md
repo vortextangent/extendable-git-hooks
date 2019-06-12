@@ -1,4 +1,4 @@
-#Extendable Git Hooks
+# Extendable Git Hooks
 
 If you are using git 2.9+; use the following command to use these for all repos:
 
@@ -6,6 +6,7 @@ If you are using git 2.9+; use the following command to use these for all repos:
 
 All git hooks are overridden and will run a personal hook of the same name after successfully completing the shared hook.
 
-##Shared hooks
+
+## Shared hooks
 
 `pre-commit` - Fails commit if there php parse errors. 
